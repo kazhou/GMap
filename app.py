@@ -5,6 +5,9 @@ main controller
 # Controller is NOT allowed to access anything in models.py
 """
 
+from kivy.config import Config
+Config.set('graphics', 'resizable', '0') # make not resizable
+
 from consts import *
 import os
 # from mapview2 import *
@@ -17,9 +20,21 @@ from kivy.core.window import Window
 Window.clearcolor = (.9, .9, .9, 1)
 Window.size = (1*width,1.25*height)
 
+
 from imports import *
 from activity import *
 from log import *
+from menu import *
+
+Builder.load_string('''
+<ScrollView>:
+    canvas:
+        Color:
+            rgb: 0.5, 0.5, 0.5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+''')
 
 class MapApp(App):
     """
@@ -27,6 +42,17 @@ class MapApp(App):
     """
     def build(self):
         parent = FloatLayout()
+        # OMlabel = Label(text=('[size=22][color=000000]Odor Manager'),
+        #             markup = True, size_hint=(None, None), size=(Window.width//3, 50),
+        #             pos_hint={'x':0.5,'y':.56})
+        # parent.add_widget(OMlabel)
+        sv = ScrollView(size_hint=(None, None),
+                size=(Window.width//3,Window.height//3), pos_hint={'x':0.5,'y':.56})
+        self.sliders = SlideMenu(10,size_hint=(None, None), width=Window.width//3) #size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55}
+        self.sliders.bind(minimum_height=self.sliders.setter('height'))
+        # parent.add_widget(self.sliders)
+        sv.add_widget(self.sliders)
+        parent.add_widget(sv)
         self.grid = Grid(10,10)
         o1 = Odor('odorlog_5-4-100a.odo')
         o2 = Odor('odorlog_5-4-100b.odo')
@@ -39,12 +65,15 @@ class MapApp(App):
         self.log = LogGraph(self.grid, 0, "Occupancy",
                             size_hint=(0.375,0.3), pos_hint={'x':0.05,'y':0.05})
         parent.add_widget(self.log)
-        # self.sliders = SlideMenu(size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55})
-        # TODO: ScrollView, add remove widgets
-        # parent.add_widget(self.sliders)
 
-        # self.bar = MenuBar(self.grid, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
-        # parent.add_widget(self.bar)
+        self.bar = MenuBar(self.grid, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
+        parent.add_widget(self.bar)
+
+
+        # TODO: ScrollView, add remove widgets
+
+
+
         # self.map.update()
 
         # self.menu = MenuDropDown(size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
@@ -52,71 +81,3 @@ class MapApp(App):
 
 
         return parent
-
-
-
-# import tkinter as tk
-# import tkinter.filedialog as fdialog
-
-# class Controller:
-#     """
-#
-#     """
-#     def __init__(self):
-#         """
-#
-#         """
-#         self.root = GApp()
-#         # self.root.geometry("800x600")
-#         # creation of an instance
-#         # self.view = Window(self.root)
-#         # self.view.register(self)
-#         # self.view.addWidgets()
-#
-#     def run(self):
-#         """
-#
-#         :return:
-#         """
-#         self.root.run()
-#
-#     # COMMANDS - need to be referenceable by view
-#     def add_odor(self):
-#         """
-#         Add new Odor to Map. If there are already MAX_ODORS odors, then no selection allowed
-#         :return:
-#         """
-#         #TODO: finish this
-#         # open file explorer
-#         print("add odor")
-#         # fname = fdialog.askopenfilename(initialdir = os.getcwd(),title = "Select file",filetypes = ((".odo files","*.odo"),("all files","*.*")))
-#         print(fname)
-#         #map.add
-#         return(Odor(fname))
-#
-#
-#     def show_hide_odor(self, status):
-#         """odor manager show/hide option
-#         status = boolean"""
-#
-#     def replace_odor(self):
-#         """
-#         remove + add odor??
-#         :return:
-#         """
-#
-#     def export_activity(self):
-#         exit()
-
-    # def updateScreen(self):
-    #     """
-    #     may or may not be necessary
-    #     :return:
-    #     """
-    #
-    # def draw(self):
-    #     """
-    #
-    #     :return:
-    #     """
-    #

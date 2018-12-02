@@ -15,6 +15,7 @@ import kivy
 # # Config.set('graphics', 'position', 'custom')
 
 from kivy.app import App
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
@@ -31,6 +32,7 @@ from kivy.graphics import Color, Rectangle
 from kivy.clock import Clock
 from os.path import sep, expanduser, isdir, dirname
 from kivy.properties import NumericProperty
+from kivy.garden.filebrowser import FileBrowser
 
 
 
