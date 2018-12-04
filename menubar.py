@@ -35,6 +35,10 @@ class FileSelect(FileBrowser):
         #TODO: close
 
     def _fbrowser_success(self, instance):
+        print(instance.selection)
+        if(len(instance.selection) == 0):
+            print('no selection')
+            return
         fpath = str(instance.selection[0])
         fname = basename(fpath)
         print (fname)
@@ -46,9 +50,10 @@ class MenuBar(BoxLayout):
     """
     Menu Bar at top
     """
-    def __init__(self, grid, **kwargs):
+    def __init__(self, grid, map, **kwargs):
         super().__init__(**kwargs)
         self.grid = grid
+        self.map = map
 
         self.fbrowser = Button(on_press=self.open_browser, text="New Odor")
                                 # size_hint=(0.1,1))
@@ -74,17 +79,19 @@ class MenuBar(BoxLayout):
 
     def add_odor(self, b):
         self.grid.addOdor(self.o1)
-        self.grid.addOdor(self.o2)
+        # self.grid.addOdor(self.o2)
         print("add")
-        displayOccupancies(self.grid)
-        # update()
+        displayActivations(self.grid)
+        self.map.plot_canv.draw()
 
     def remove_odor(self, b):
         self.grid.removeOdor(self.o1)
         print("remove")
-        displayOccupancies(self.grid)
+        displayActivations(self.grid)
+        self.map.plot_canv.draw()
 
     def adjust_conc(self, b):
         self.grid.adjustConcs(self.o2, 10e-4)
         print("adj")
-        displayOccupancies(self.grid)
+        displayActivations(self.grid)
+        self.map.plot_canv.draw()

@@ -47,29 +47,37 @@ class MapApp(App):
         #             markup = True, size_hint=(None, None), size=(Window.width//3, 50),
         #             pos_hint={'x':0.5,'y':.56})
         # parent.add_widget(OMlabel)
+
+        self.grid = Grid(10,10)
+        o1 = Odor('odorlog_5-4-100a.odo')
+        o2 = Odor('odorlog_5-4-100b.odo')
+        # self.grid.addOdor(o1)
+        self.grid.addOdor(o2)
+
+        self.map = MapWidget(self.grid, size_hint=(0.375,0.5), pos_hint={'x':0.05,'y':.4})
+        parent.add_widget(self.map)
+
+        self.map_opt = Options(size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.8})
+        parent.add_widget(self.map_opt)
+
+        self.log = LogGraph(self.grid, 0, "Occupancy",'odorlog_5-4-100b.odo',
+                            size_hint=(0.375,0.3), pos_hint={'x':0.05,'y':0.05})
+        parent.add_widget(self.log)
+
+        self.log_opt = Options(size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.3})
+        parent.add_widget(self.log_opt)
+
+        self.bar = MenuBar(self.grid, self.map, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
+        parent.add_widget(self.bar)
+
         sv = ScrollView(size_hint=(None, None),
-                size=(Window.width//3,Window.height//3), pos_hint={'x':0.5,'y':.56})
-        self.sliders = SlideMenu(10,size_hint=(None, None), width=Window.width//3) #size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55}
+                size=(Window.width//3,Window.height//3), pos_hint={'x':0.5,'y':.45})
+        self.sliders = SlideMenu(10,size_hint=(None, None), width=Window.width//3)
+                #size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55}
         self.sliders.bind(minimum_height=self.sliders.setter('height'))
         # parent.add_widget(self.sliders)
         sv.add_widget(self.sliders)
         parent.add_widget(sv)
-        self.grid = Grid(10,10)
-        o1 = Odor('odorlog_5-4-100a.odo')
-        o2 = Odor('odorlog_5-4-100b.odo')
-        self.grid.addOdor(o1)
-        self.grid.addOdor(o2)
-
-        self.map = MapWidget(self.grid,  size_hint=(0.375,0.5), pos_hint={'x':0.05,'y':.4})
-        parent.add_widget(self.map)
-
-        self.log = LogGraph(self.grid, 0, "Activation",'odorlog_5-4-100b.odo',
-                            size_hint=(0.375,0.3), pos_hint={'x':0.05,'y':0.05})
-        parent.add_widget(self.log)
-
-        self.bar = MenuBar(self.grid, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
-        parent.add_widget(self.bar)
-
 
         # TODO: ScrollView, add remove widgets
 

@@ -10,8 +10,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivy, FigureCanvasKivyAgg
 
-fig, ax = plt.subplots()
-canvas = fig.canvas
+# fig, ax = plt.subplots()
+# canvas = fig.canvas
+plt.figure(figsize=(12,12))
 
 def displayOccupancies(grid):
         """
@@ -23,13 +24,9 @@ def displayOccupancies(grid):
         # print("in display")
 
         plt.clf()
-        plt.figure(figsize=(12,12))
-        # print(grid.getOccupancies())
-        # print(grid.getOccupancies().shape())
         sns.heatmap(grid.getOccupancies(),
                     cmap='Blues', vmin = 0, vmax=1)
-        canvas.draw()
-        # sns.plt.show()
+        # plt.draw()
 
 def displayActivations(grid):
         """
@@ -39,12 +36,9 @@ def displayActivations(grid):
         """
         #color=sns.choose_colorbrewer_palette('sequential', as_cmap=True)
         # print("in display")
-        plt.figure(figsize=(12,12))
-        # print(grid.getOccupancies())
-        # print(grid.getOccupancies().shape())
+        plt.clf()
         sns.heatmap(grid.getActivations(),
                     cmap='Reds', vmin = 0, vmax=1)
-        plt.draw()
         # sns.plt.show()
 # def plot(dt):
 #     plt.clf()
@@ -76,18 +70,11 @@ class MapWidget(BoxLayout):
         # self.grid.adjustConcs(o2, 10e-1)
         # displayOccupancies(self.grid)
         self.grid = grid
-        displayOccupancies(self.grid)
+        displayActivations(self.grid)
         # self.bind(on_release=self.grid.adjustConcs('odorlog_5-4-100a.odo', 10e-7))
-        canvas = FigureCanvasKivyAgg(plt.gcf())
-        self.add_widget(canvas)
+        self.plot_canv = FigureCanvasKivyAgg(plt.gcf())
+        self.add_widget(self.plot_canv)
         # canvas.draw()
-
-    # def updateOcc(self, *largs):
-    #     displayOccupancies(self.grid)
-    #     self.canvas = FigureCanvasKivyAgg(plt.gcf())
-
-
-
 
 
 class MapPopUp(Popup):
@@ -147,10 +134,13 @@ class SlideMenu(BoxLayout):
 class Options(BoxLayout):
     """
     """
+    def getState(self):
+        return self.opt_btn.state
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
-        self.opt_btn = ToggleButton(text='Occupancy', group='opt', state='down',
+        self.opt_btn = ToggleButton(text='Occupancy', state='down',
                 size_hint=(0.5,1), on_press=self.update)
         # self.opt_btn.bind(self.update)
         # self.act_btn = ToggleButton(text='Activation', group='opt',
@@ -158,6 +148,7 @@ class Options(BoxLayout):
         self.add_widget(self.opt_btn)
 
     def update(self,event):
+        #TODO: switch map display
         if self.opt_btn.state == 'normal':
             self.opt_btn.text = "Activation"
         else:
