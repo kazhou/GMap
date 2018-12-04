@@ -27,12 +27,14 @@ class LogGraph(BoxLayout):
         # else:
         #     raise BadOption
 
-        graph = Graph(xlabel='X', ylabel='Y', x_ticks_minor=5,
-        x_ticks_major=25, y_ticks_major=1,
+        graph = Graph(xlabel='Concentration', ylabel='Log',
+        x_ticks_major=1, y_ticks_major=0.25,
         y_grid_label=True, x_grid_label=True, padding=5,
-        x_grid=True, y_grid=True, xmin=-0, xmax=100, ymin=-1, ymax=1,
+        x_grid=False, y_grid=False, xmin=-10, xmax=0, ymin=0, ymax=1,
         background_color=[0.75,0.75,0.75,1])
         plot = MeshLinePlot(color=[1, 0, 0, 1])
-        plot.points = [(x, sin(x / 10.)) for x in range(0, 101)]
+        print(self.grid.odors)
+        plot.points = self.grid.getConcPointsOcc(0, 'odorlog_5-4-100a.odo') #[(x, -0.1*x) for x in range(-10, 0)]
+        print(plot.points)
         graph.add_plot(plot)
         return graph

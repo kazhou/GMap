@@ -30,9 +30,10 @@ from kivy.uix.popup import Popup
 from kivy.lang import Builder
 from kivy.graphics import Color, Rectangle
 from kivy.clock import Clock
-from os.path import sep, expanduser, isdir, dirname
+from os.path import sep, expanduser, isdir, dirname, basename
 from kivy.properties import NumericProperty
 from kivy.garden.filebrowser import FileBrowser
+
 
 
 

@@ -58,7 +58,7 @@ class Receptor:
         # print(self.odors)
         # print(self.odors.values())
         for o in self.odors:
-            self.partial_occupancies[o] = self.calcPartialOcc(o)
+            self.partial_occupancies[o] = self.calcPartialOcc(o, True)
         p_o = list(self.partial_occupancies.values())
         self.total_occ = sum(p_o)
         # print(np.array(p_o))
@@ -119,23 +119,52 @@ class Receptor:
             sum += (self.concs[odor]/self.kds[odor])
         return sum
 
-    def calcPartialOcc(self, odor):
+    def calcPartialOcc(self, odor, default = True, value = DEFAULT_CONC):
         """
         Finds Partial Occ of odor
         """
-        conc = self.concs[odor]
+        if default:
+            conc = self.concs[odor]
+            df = self.df
+        else:
+            conc = value
+            df = self.calcDFPoints(odor, value)
+
         if conc == 0:
             return 0
         kd = self.kds[odor]
         m = HILL
-        p = 1/(1+((kd/conc)*(1+self.df-(conc/kd)))**m)
+        p = 1/(1+((kd/conc)*(1+df-(conc/kd)))**m)
         # print('partial oc' + repr(p))
         return p
 
-    # def __str__(self):
-        # od = self.odors.keys()
+    def conc_partial_points_occ(self, odor):
+        points = []
+        kd = self.kds[odor]
+        print(kd)
+        # o = self.odors[odor]
+        # print(o.getkD())
+        for c in range (-10, 0):
+            conc = pow(10,c)
+            print(conc)
+            po = self.calcPartialOcc(odor, False, conc)
+            points.append((c, po))
+        return points
 
-        # pass
+    def calcDFPoints(self, odor_name, value):
+        """
+        finds DF
+        """
+        sum = 0
+        for odor in self.odors:
+            # print(self.concs[odor])
+            # print(self.kds[odor])
+            if odor == odor_name:
+                conc = value
+            else:
+                conc = self.concs[odor]
+            sum += (conc/self.kds[odor])
+        return sum
 
 
 class Grid:
@@ -163,13 +192,6 @@ class Grid:
         self.y = y
         self.odors = {}
         # self.size = size
-
-    # def mapDict(func, dicto):
-    #     """
-    #     like apply over axes but no np
-    #     """
-    #     dicto = (map(lambda kv: (kv[0], func(kv[1])), dicto.items()))
-    #     return dicto
 
     def addOdor(self, odor):
         """
@@ -231,7 +253,6 @@ class Grid:
         rec.removeOdor(name)
         return rec
 
-
     def getOccupancies(self):
         """
         REturn list of occupancies
@@ -271,6 +292,11 @@ class Grid:
         # print(rec, odor, conc)
         rec.adjustConc(odor, conc)
         return rec
+
+    def getConcPointsOcc(self, rec_index, odor_name):
+        rec = self.receptors[rec_index]
+        return rec.conc_partial_points_occ(odor_name)
+
 
     # def getOccHelper(self, arr):
     #     """

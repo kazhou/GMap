@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivy, FigureCanvasKivyAgg
 
+fig, ax = plt.subplots()
+canvas = fig.canvas
 
 def displayOccupancies(grid):
         """
@@ -19,12 +21,14 @@ def displayOccupancies(grid):
         """
         #color=sns.choose_colorbrewer_palette('sequential', as_cmap=True)
         # print("in display")
+
+        plt.clf()
         plt.figure(figsize=(12,12))
         # print(grid.getOccupancies())
         # print(grid.getOccupancies().shape())
         sns.heatmap(grid.getOccupancies(),
                     cmap='Blues', vmin = 0, vmax=1)
-        plt.draw()
+        canvas.draw()
         # sns.plt.show()
 
 def displayActivations(grid):
@@ -42,6 +46,17 @@ def displayActivations(grid):
                     cmap='Reds', vmin = 0, vmax=1)
         plt.draw()
         # sns.plt.show()
+# def plot(dt):
+#     plt.clf()
+#     plt.figure(figsize=(12,12))
+#     # print(grid.getOccupancies())
+#     # print(grid.getOccupancies().shape())
+#     sns.heatmap(grid.getOccupancies(),
+#                 cmap='Blues', vmin = 0, vmax=1)
+#     plt.draw()
+#
+# def update():
+#     Clock.schedule_interval(plot,1)
 
 class MapWidget(BoxLayout):
     """
@@ -61,21 +76,18 @@ class MapWidget(BoxLayout):
         # self.grid.adjustConcs(o2, 10e-1)
         # displayOccupancies(self.grid)
         self.grid = grid
-        displayActivations(self.grid)
+        displayOccupancies(self.grid)
         # self.bind(on_release=self.grid.adjustConcs('odorlog_5-4-100a.odo', 10e-7))
         canvas = FigureCanvasKivyAgg(plt.gcf())
         self.add_widget(canvas)
         # canvas.draw()
 
-    def plot(self, dt):
-        plt.figure(figsize=(12,12))
-        # print(grid.getOccupancies())
-        # print(grid.getOccupancies().shape())
-        sns.heatmap(self.grid.getOccupancies(),
-                    cmap='Blues', vmin = 0, vmax=1)
+    # def updateOcc(self, *largs):
+    #     displayOccupancies(self.grid)
+    #     self.canvas = FigureCanvasKivyAgg(plt.gcf())
 
-    def update(self):
-        Clock.schedule_interval(self.plot,1)
+
+
 
 
 class MapPopUp(Popup):

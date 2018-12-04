@@ -22,19 +22,20 @@ Window.size = (1*width,1.25*height)
 
 
 from imports import *
+from menubar import *
 from activity import *
 from log import *
-from menu import *
 
-Builder.load_string('''
-<ScrollView>:
-    canvas:
-        Color:
-            rgb: 0.5, 0.5, 0.5
-        Rectangle:
-            pos: self.pos
-            size: self.size
-''')
+
+# Builder.load_string('''
+# <ScrollView>:
+#     canvas:
+#         Color:
+#             rgb: 0.5, 0.5, 0.5
+#         Rectangle:
+#             pos: self.pos
+#             size: self.size
+# ''')
 
 class MapApp(App):
     """
@@ -56,7 +57,7 @@ class MapApp(App):
         self.grid = Grid(10,10)
         o1 = Odor('odorlog_5-4-100a.odo')
         o2 = Odor('odorlog_5-4-100b.odo')
-        # self.grid.addOdor(o1)
+        self.grid.addOdor(o1)
         self.grid.addOdor(o2)
 
         self.map = MapWidget(self.grid,  size_hint=(0.375,0.5), pos_hint={'x':0.05,'y':.4})
