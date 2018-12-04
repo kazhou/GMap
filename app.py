@@ -63,7 +63,7 @@ class MapApp(App):
         self.map = MapWidget(self.grid,  size_hint=(0.375,0.5), pos_hint={'x':0.05,'y':.4})
         parent.add_widget(self.map)
 
-        self.log = LogGraph(self.grid, 0, "Occupancy",
+        self.log = LogGraph(self.grid, 0, "Activation",'odorlog_5-4-100b.odo',
                             size_hint=(0.375,0.3), pos_hint={'x':0.05,'y':0.05})
         parent.add_widget(self.log)
 

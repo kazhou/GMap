@@ -140,15 +140,26 @@ class Receptor:
 
     def conc_partial_points_occ(self, odor):
         points = []
-        kd = self.kds[odor]
-        print(kd)
+        # kd = self.kds[odor]
+        # print(kd)
         # o = self.odors[odor]
         # print(o.getkD())
         for c in range (-10, 0):
             conc = pow(10,c)
-            print(conc)
+            # print(conc)
             po = self.calcPartialOcc(odor, False, conc)
             points.append((c, po))
+        return points
+
+    def conc_partial_points_act(self, odor):
+        points = []
+        eff = self.effs[odor]
+        for c in range (-10, 0):
+            conc = pow(10,c)
+            # print(conc)
+            po = self.calcPartialOcc(odor, False, conc)
+            act = po*eff
+            points.append((c, act))
         return points
 
     def calcDFPoints(self, odor_name, value):
@@ -297,6 +308,9 @@ class Grid:
         rec = self.receptors[rec_index]
         return rec.conc_partial_points_occ(odor_name)
 
+    def getConcPointsAct(self, rec_index, odor_name):
+        rec = self.receptors[rec_index]
+        return rec.conc_partial_points_act(odor_name)
 
     # def getOccHelper(self, arr):
     #     """
