@@ -81,17 +81,16 @@ class MenuBar(BoxLayout):
         self.grid.addOdor(self.o1)
         # self.grid.addOdor(self.o2)
         print("add")
-        displayActivations(self.grid)
-        self.map.plot_canv.draw()
+        # displayActivations(self.grid)
+        # self.map.plot_canv.draw()
+        self.map.update("Occupancy")
 
     def remove_odor(self, b):
         self.grid.removeOdor(self.o1)
         print("remove")
-        displayActivations(self.grid)
-        self.map.plot_canv.draw()
+        self.map.update("Occupancy")
 
     def adjust_conc(self, b):
         self.grid.adjustConcs(self.o2, 10e-4)
         print("adj")
-        displayActivations(self.grid)
-        self.map.plot_canv.draw()
+        self.map.update("Occupancy")

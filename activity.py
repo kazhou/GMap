@@ -59,7 +59,7 @@ class MapWidget(BoxLayout):
     def getGrid(self):
         return self.grid
 
-    def __init__(self, grid, **kwargs):
+    def __init__(self, grid, mode, **kwargs):
         super().__init__(**kwargs)
         # self.grid = Grid(10,10)
         # o1 = Odor('odorlog_5-4-100a.odo')
@@ -70,11 +70,21 @@ class MapWidget(BoxLayout):
         # self.grid.adjustConcs(o2, 10e-1)
         # displayOccupancies(self.grid)
         self.grid = grid
-        displayActivations(self.grid)
+        if mode == "Occupancy":
+            displayOccupancies(self.grid)
+        else:
+            displayActivations(self.grid)
         # self.bind(on_release=self.grid.adjustConcs('odorlog_5-4-100a.odo', 10e-7))
         self.plot_canv = FigureCanvasKivyAgg(plt.gcf())
         self.add_widget(self.plot_canv)
         # canvas.draw()
+
+    def update(self, mode):
+        if mode == "Occupancy":
+            displayOccupancies(self.grid)
+        else:
+            displayActivations(self.grid)
+        self.plot_canv.draw()
 
 
 class MapPopUp(Popup):
@@ -131,14 +141,15 @@ class SlideMenu(BoxLayout):
                          size_hint=(None, None))
             self.add_widget(om[i])
 
-class Options(BoxLayout):
+class MapOptions(BoxLayout):
     """
     """
     def getState(self):
         return self.opt_btn.state
 
-    def __init__(self, **kwargs):
+    def __init__(self, map, **kwargs):
         super().__init__(**kwargs)
+        self.map = map
         self.orientation = "horizontal"
         self.opt_btn = ToggleButton(text='Occupancy', state='down',
                 size_hint=(0.5,1), on_press=self.update)
@@ -153,3 +164,4 @@ class Options(BoxLayout):
             self.opt_btn.text = "Activation"
         else:
             self.opt_btn.text = "Occupancy"
+        self.map.update(self.opt_btn.text)
