@@ -34,9 +34,9 @@ class LogGraph(BoxLayout):
         x_grid=False, y_grid=False, xmin=-10, xmax=0, ymin=0, ymax=1,
         background_color=[0.75,0.75,0.75,1])
         plot = MeshLinePlot(color=[1, 0, 0, 1])
-        print(self.grid.odors)
+        # print(self.grid.odors)
         # plot.points = self.grid.getConcPointsOcc(0, 'odorlog_5-4-100a.odo') #[(x, -0.1*x) for x in range(-10, 0)]
         plot.points = data
-        print(plot.points)
+        # print(plot.points)
         graph.add_plot(plot)
         return graph

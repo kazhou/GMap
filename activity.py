@@ -132,7 +132,7 @@ class OManager(BoxLayout):
 class SlideMenu(BoxLayout):
     """
     Menu of sliders to adjust concentrations
-    TODO: scrollbar/popup
+    TODO: Associate w/ odors
     """
     def __init__(self, size, **kwargs):
         super().__init__(**kwargs)
@@ -143,9 +143,22 @@ class SlideMenu(BoxLayout):
             om[i] = OManager(size=(self.width, 75),
                          size_hint=(None, None))
             self.add_widget(om[i])
-        # o1 = OManager()
-        # self.add_widget(o1)
-        # o2 = OManager()
-        # self.add_widget(o2)
-        # o3 = OManager()
-        # self.add_widget(o3)
+
+class Options(BoxLayout):
+    """
+    """
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = "horizontal"
+        self.opt_btn = ToggleButton(text='Occupancy', group='opt', state='down',
+                size_hint=(0.5,1), on_press=self.update)
+        # self.opt_btn.bind(self.update)
+        # self.act_btn = ToggleButton(text='Activation', group='opt',
+        #         size_hint=(0.5,1))
+        self.add_widget(self.opt_btn)
+
+    def update(self,event):
+        if self.opt_btn.state == 'normal':
+            self.opt_btn.text = "Activation"
+        else:
+            self.opt_btn.text = "Occupancy"

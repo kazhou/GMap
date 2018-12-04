@@ -216,10 +216,10 @@ class Grid:
         rec_np = np.array([self.receptors, [odor]*size, [odor.getName()]*size, odor.getkD(),
         odor.getEff(), [DEFAULT_CONC]*size])
         #convert to np of tuples (kd, eff, conc)s?
-        #TODO: fix
         # print(np)
         # print(self.receptors.tolist())
         self.receptors = np.apply_along_axis(self.addHelper, 0, rec_np)
+        #TODO: fix this for dynamic resizing
         self.odors[odor.getName()] = odor
         # print(self.receptors.tolist())
 
@@ -311,38 +311,3 @@ class Grid:
     def getConcPointsAct(self, rec_index, odor_name):
         rec = self.receptors[rec_index]
         return rec.conc_partial_points_act(odor_name)
-
-    # def getOccHelper(self, arr):
-    #     """
-    #     arr is Receptor list
-    #     """
-    #     rec = arr[0]
-    #     return rec.getOccupancy
-
-#
-# ###############OLD####################
-#     def displayOccupancies(self):
-#         """
-#         color range representing strength of efficacies/occupancies
-#         https://stackoverflow.com/questions/33282368/plotting-a-2d-heatmap-with-matplotlib
-#         :return:
-#         """
-#         #color=sns.choose_colorbrewer_palette('sequential', as_cmap=True)
-#         print("in display")
-#         plt.figure(figsize=(12,10))
-#         sns.heatmap(self.receptors.getOccupancies(),
-#                     cmap='Blues')
-#         sns.plt.show()
-#
-#     # def displayActivation(self):
-#     #     """s
-#     #     color range representing strength of efficacies/occupancies
-#     #     https://stackoverflow.com/questions/33282368/plotting-a-2d-heatmap-with-matplotlib
-#     #     :return:
-#     #     """
-#     #     #color=sns.choose_colorbrewer_palette('sequential', as_cmap=True)
-#     #     print("in display")
-#     #     plt.figure(figsize=(12,10))
-#     #     sns.heatmap(self.efficacies,
-#     #                 cmap='Reds')
-#     #     sns.plt.show()
