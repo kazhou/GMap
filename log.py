@@ -8,7 +8,8 @@ class LogGraph(BoxLayout):
         self.grid = grid
         self.receptor = receptor
         self.odor = odor
-        self.makeGraph(receptor, odor, option)
+        self.state = option
+        self.makeGraph(receptor, odor)
         self.background_normal = ''
         self.background_color = [1,0,0,1]
         self.add_widget(self.graph)
@@ -17,13 +18,13 @@ class LogGraph(BoxLayout):
         #     Color(1, 0, 0, 1)  # set the colour to red
         #     self.rect = Rectangle(size_hint=(0.375,0.5), pos_hint={'x':0.55,'y':0})
 
-    def makeGraph(self, receptor, odor, option):
+    def makeGraph(self, receptor, odor):
         """
         display option (occupancy/activity) for receptor #
         """
         rec = self.grid.getReceptor(receptor)
 
-        data = self.getData(receptor, odor, option)
+        data = self.getData(receptor, odor)
             # raise BadOption
 
         self.graph = Graph(xlabel='Concentration', ylabel='Log',
@@ -38,12 +39,12 @@ class LogGraph(BoxLayout):
         # print(plot.points)
         self.graph.add_plot(self.plot)
 
-    def getData(self, receptor, odor, option):
+    def getData(self, receptor, odor):
         if odor is None:
             data = []
-        elif option == "Occupancy":
+        elif self.state == "Occupancy":
             data = self.grid.getConcPointsOcc(receptor, odor)
-        elif option == "Activation":
+        elif self.state == "Activation":
             data = self.grid.getConcPointsAct(receptor, odor)
         else:
             data = []
@@ -68,10 +69,12 @@ class LogOptions(BoxLayout):
         #TODO: switch map display
         if self.opt_btn.state == 'normal':
             self.opt_btn.text = "Activation"
+            self.state =  "Activation"
         else:
             self.opt_btn.text = "Occupancy"
+            self.state =  "Occupancy"
         self.log.graph.remove_plot(self.log.plot)
         self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
-        data = self.log.getData(self.log.receptor, self.log.odor, self.opt_btn.text)
+        data = self.log.getData(self.log.receptor, self.log.odor)
         self.log.plot.points = data
         self.log.graph.add_plot(self.log.plot)

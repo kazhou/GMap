@@ -52,6 +52,7 @@ class MapWidget(BoxLayout):
         super().__init__(**kwargs)
 
         self.grid = grid
+        self.state = mode
         if mode == "Occupancy":
             displayOccupancies(self.grid)
         else:
@@ -61,11 +62,12 @@ class MapWidget(BoxLayout):
         self.add_widget(self.plot_canv)
         # canvas.draw()
 
-    def update(self, mode):
-        if mode == "Occupancy":
-            displayOccupancies(self.grid)
-        else:
+    def update(self):
+        if self.state == "Activation":
             displayActivations(self.grid)
+        else:
+            displayOccupancies(self.grid)
+
         self.plot_canv.draw()
 
 
@@ -160,4 +162,5 @@ class MapOptions(BoxLayout):
             self.opt_btn.text = "Activation"
         else:
             self.opt_btn.text = "Occupancy"
-        self.map.update(self.opt_btn.text)
+        self.map.state = self.opt_btn.text
+        self.map.update()

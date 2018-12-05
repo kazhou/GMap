@@ -5,10 +5,10 @@ from log import *
 
 
 class FilePopup(Popup):
-    def __init__(self, **kwargs):
+    def __init__(self,map, grid, **kwargs):
         super().__init__(**kwargs)
-        self.auto_dismiss = True
-        fbrowser = FileSelect()
+        self.auto_dismiss = False
+        fbrowser = FileSelect(self, map, grid)
         self.add_widget(fbrowser)
 
 
@@ -16,7 +16,7 @@ class FileSelect(FileBrowser):
     """
     filebrowser
     """
-    def __init__(self,**kwargs):
+    def __init__(self, pop, map, grid, **kwargs):
         if sys.platform == 'win':
             self.user_path = dirname(expanduser(os.getcwd())) + sep + 'data'
         else:
@@ -27,11 +27,14 @@ class FileSelect(FileBrowser):
                               favorites=[(self.user_path, 'data')], **kwargs)
         self.bind(on_success=self._fbrowser_success,
                     on_canceled=self._fbrowser_canceled)
+        self.pop = pop
+        self.grid = grid
+        self.map = map
 
 
     def _fbrowser_canceled(self, instance):
         print ('cancelled, Close self.')
-        # self.dismiss()
+        self.pop.dismiss()
         #TODO: close
 
     def _fbrowser_success(self, instance):
@@ -42,8 +45,18 @@ class FileSelect(FileBrowser):
         fpath = str(instance.selection[0])
         fname = basename(fpath)
         print (fname)
-        return fname
-        #TODO add odor
+        # return fname
+        self.add_odor(fname)
+        self.pop.dismiss()
+
+    def add_odor(self, o):
+        odor = Odor(o)
+        self.grid.addOdor(odor)
+        # self.grid.addOdor(self.o2)
+        print("add")
+        # displayActivations(self.grid)
+        # self.map.plot_canv.draw()
+        self.map.update()
 
 
 class MenuBar(BoxLayout):
@@ -58,8 +71,10 @@ class MenuBar(BoxLayout):
         self.fbrowser = Button(on_press=self.open_browser, text="New Odor")
                                 # size_hint=(0.1,1))
         self.add_widget(self.fbrowser)
-        self.save_btn =  Button(text="Save Activity")
+        self.save_btn =  Button(text="Export Activity")
         self.add_widget(self.save_btn)
+        self.img_btn =  Button(text="Save Image")
+        self.add_widget(self.img_btn)
         self.clear_btn =  Button(text="Clear All")
         self.add_widget(self.clear_btn)
 
@@ -74,7 +89,7 @@ class MenuBar(BoxLayout):
         self.add_widget(self.conc_btn)
 
     def open_browser(self, b):
-        p = FilePopup(size_hint=(0.7,0.7))
+        p = FilePopup(self.map, self.grid, size_hint=(0.7,0.7))
         p.open()
 
     def add_odor(self, b):
@@ -83,14 +98,14 @@ class MenuBar(BoxLayout):
         print("add")
         # displayActivations(self.grid)
         # self.map.plot_canv.draw()
-        self.map.update("Occupancy")
+        self.map.update()
 
     def remove_odor(self, b):
         self.grid.removeOdor(self.o1)
         print("remove")
-        self.map.update("Occupancy")
+        self.map.update()
 
     def adjust_conc(self, b):
         self.grid.adjustConcs(self.o2, 10e-4)
         print("adj")
-        self.map.update("Occupancy")
+        self.map.update()
