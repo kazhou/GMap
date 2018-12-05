@@ -68,16 +68,18 @@ class MapApp(App):
         self.log_opt = LogOptions(self.log,size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.3})
         parent.add_widget(self.log_opt)
 
-        self.bar = MenuBar(self.grid, self.map, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
-        parent.add_widget(self.bar)
+
 
         sv = ScrollView(size_hint=(None, None),
                 size=(Window.width//3,Window.height//3), pos_hint={'x':0.5,'y':.45})
-        self.sliders = SlideMenu(10,size_hint=(None, None), width=Window.width//3)
+        self.sliders = SlideMenu(self.grid, self.map, size_hint=(None, None), width=Window.width//3)
                 #size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55}
         self.sliders.bind(minimum_height=self.sliders.setter('height'))
         # parent.add_widget(self.sliders)
         sv.add_widget(self.sliders)
         parent.add_widget(sv)
+
+        self.bar = MenuBar(self.grid, self.map, self.sliders, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
+        parent.add_widget(self.bar)
 
         return parent

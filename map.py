@@ -246,11 +246,11 @@ class Grid:
         # if odor.getName() not in self.odors:
         #     return
         # size = len(odor.getkD())
-        rec_np = np.array([self.receptors, [odor.getName()]*self.num_receptors])
+        rec_np = np.array([self.receptors, [odor]*self.num_receptors])
         # print(rec_np)
         self.receptors = np.apply_along_axis(self.removeHelper, 0, rec_np)
         try:
-            del self.odors[odor.getName()]
+            del self.odors[odor]
         except:
             pass
 

@@ -5,10 +5,10 @@ from log import *
 
 
 class FilePopup(Popup):
-    def __init__(self,map, grid, **kwargs):
+    def __init__(self,map, grid, sm, **kwargs):
         super().__init__(**kwargs)
         self.auto_dismiss = False
-        fbrowser = FileSelect(self, map, grid)
+        fbrowser = FileSelect(self, map, grid, sm)
         self.add_widget(fbrowser)
 
 
@@ -16,7 +16,7 @@ class FileSelect(FileBrowser):
     """
     filebrowser
     """
-    def __init__(self, pop, map, grid, **kwargs):
+    def __init__(self, pop, map, grid, sm, **kwargs):
         if sys.platform == 'win':
             self.user_path = dirname(expanduser(os.getcwd())) + sep + 'data'
         else:
@@ -30,6 +30,7 @@ class FileSelect(FileBrowser):
         self.pop = pop
         self.grid = grid
         self.map = map
+        self.sm = sm
 
 
     def _fbrowser_canceled(self, instance):
@@ -57,16 +58,26 @@ class FileSelect(FileBrowser):
         # displayActivations(self.grid)
         # self.map.plot_canv.draw()
         self.map.update()
+        self.sm.add_om(o)
+
+    def remove_odor(self, o):
+        # TODO: move this
+        self.grid.removeOdor(self.o1)
+        print("remove")
+        self.map.update()
+        self.sm.remove_om(o)
+
 
 
 class MenuBar(BoxLayout):
     """
     Menu Bar at top
     """
-    def __init__(self, grid, map, **kwargs):
+    def __init__(self, grid, map, sm, **kwargs):
         super().__init__(**kwargs)
         self.grid = grid
         self.map = map
+        self.sm = sm
 
         self.fbrowser = Button(on_press=self.open_browser, text="New Odor")
                                 # size_hint=(0.1,1))
@@ -81,31 +92,20 @@ class MenuBar(BoxLayout):
         #TODO: for demonstration
         self.o1 = Odor('odorlog_5-4-100a.odo')
         self.o2 = Odor('odorlog_5-4-100b.odo')
-        self.add_btn =  Button(text="Add Odor", on_press=self.add_odor)
-        self.add_widget(self.add_btn)
-        self.remove_btn =  Button(text="Remove Odor", on_press=self.remove_odor)
-        self.add_widget(self.remove_btn)
-        self.conc_btn =  Button(text="Change Conc", on_press=self.adjust_conc)
-        self.add_widget(self.conc_btn)
+
+        # self.remove_btn =  Button(text="Remove Odor", on_press=self.remove_odor)
+        # self.add_widget(self.remove_btn)
+        # self.conc_btn =  Button(text="Change Conc", on_press=self.adjust_conc)
+        # self.add_widget(self.conc_btn)
 
     def open_browser(self, b):
-        p = FilePopup(self.map, self.grid, size_hint=(0.7,0.7))
+        p = FilePopup(self.map, self.grid, self.sm, size_hint=(0.7,0.7))
         p.open()
 
-    def add_odor(self, b):
-        self.grid.addOdor(self.o1)
-        # self.grid.addOdor(self.o2)
-        print("add")
-        # displayActivations(self.grid)
-        # self.map.plot_canv.draw()
-        self.map.update()
 
-    def remove_odor(self, b):
-        self.grid.removeOdor(self.o1)
-        print("remove")
-        self.map.update()
 
-    def adjust_conc(self, b):
-        self.grid.adjustConcs(self.o2, 10e-4)
-        print("adj")
-        self.map.update()
+
+    # def adjust_conc(self, b):
+    #     self.grid.adjustConcs(self.o2, 10e-4)
+    #     print("adj")
+    #     self.map.update()
