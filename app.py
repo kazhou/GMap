@@ -59,7 +59,8 @@ class MapApp(App):
             pos_hint={'x':0.05,'y':.4})
         parent.add_widget(self.map)
 
-        self.map_opt = MapOptions(self.map, size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.8})
+        self.map_opt = MapOptions(self.map,size_hint=(None, None),
+                size=(Window.width//3+75,50), pos_hint={'x':0.5,'y':.8})
         parent.add_widget(self.map_opt)
 
         self.log = LogGraph(self.grid, 0, "Occupancy", None, -5,
@@ -73,8 +74,8 @@ class MapApp(App):
 
 
         sv = ScrollView(size_hint=(None, None),
-                size=(Window.width//3,Window.height//3), pos_hint={'x':0.5,'y':.45})
-        self.sliders = SlideMenu(self.grid, self.map, self.log, size_hint=(None, None), width=Window.width//3)
+                size=(Window.width//3+75,Window.height//3), pos_hint={'x':0.5,'y':.45})
+        self.sliders = SlideMenu(self.grid, self.map, self.log, size_hint=(None, None), width=Window.width//3+75)
                 #size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55}
         self.sliders.bind(minimum_height=self.sliders.setter('height'))
         # parent.add_widget(self.sliders)

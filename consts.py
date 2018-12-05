@@ -1,8 +1,8 @@
 """
 Constants for GMap
 
-This module global constants for the game Alien Invaders. These constants need to be used 
-in the model, the view, and the controller. As these are spread across multiple modules, 
+This module global constants for the game Alien Invaders. These constants need to be used
+in the model, the view, and the controller. As these are spread across multiple modules,
 we separate the constants into their own module. This allows all modules to access them.
 
 # YOUR NAME(S) AND NETID(S) HERE

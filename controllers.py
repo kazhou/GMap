@@ -14,6 +14,9 @@ class OManager(BoxLayout):
         self.map = map
         self.log = log
 
+        self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1))
+        self.checkbox.bind(active = self.show_plot)
+
         self.big_box1 = BoxLayout(orientation="vertical",size_hint=(0.20,1))
         self.name = Label(text=('[size=16][color=000000]'+str(odor)),
                     markup = True, size_hint=(1,0.15))
@@ -29,15 +32,17 @@ class OManager(BoxLayout):
         self.box.add_widget(self.remove_btn)
         self.padding = [5,10,5,10]
         self.slider = Slider(min=-10, max=0, step = 1, value = -5,
-                        size_hint=(0.6,1))
+                        size_hint=(0.5,1))
         self.slider.fbind('value', self.on_slider_val)
         self.label = Label(text=('[size=18][color=000000]10e'+str(self.slider_val)),
                     markup = True, size_hint=(0.2,1))
         self.big_box2 = BoxLayout(orientation="horizontal", size_hint=(1,0.85))
 
+
         self.big_box2.add_widget(self.box)
         self.big_box2.add_widget(self.slider)
         self.big_box2.add_widget(self.label)
+        self.big_box2.add_widget(self.checkbox)
 
         self.big_box1.add_widget(self.big_box2)
         self.add_widget(self.big_box1)
@@ -57,7 +62,7 @@ class OManager(BoxLayout):
         if self.log.odor == self.odor:
             self.log.conc = -5
             self.log.updateConcLine()
-        self.adjust_conc(10e-5)
+        self.adjust_conc(1e-5)
 
     def adjust_conc(self, conc):
         odor = self.grid.odors[self.odor]
@@ -71,6 +76,22 @@ class OManager(BoxLayout):
         self.menu.remove_om(self.odor)
         # print(self.name)
         print(self.menu.om_list)
+
+    def show_plot(self, instance, active):
+        print('in choose odor')
+        if not active:
+            self.log.graph.remove_plot(self.log.plot)
+            self.log.odor = None
+            return
+
+        self.log.odor = self.odor
+        self.log.graph.remove_plot(self.log.plot)
+        self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
+        data = self.log.getData(self.log.receptor, self.log.odor)
+        self.log.plot.points = data
+        self.log.graph.add_plot(self.log.plot)
+
+        self.log.updateConcLine()
 
     def hide(self):
         pass
@@ -166,23 +187,23 @@ class LogOptions(BoxLayout):
         row1 = BoxLayout(orientation="horizontal", size_hint=(1,0.4))
         self.rec_label = Label(text=('[size=16][color=000000]Receptor'),
                     markup = True, size_hint=(0.5, 1))
-        self.rec_select = TextInput(multiline=False, input_type='number',
+        self.rec_select = TextInput(text = "0", multiline=False, input_type='number',
             on_text_validate=self.choose_rec, size_hint=(0.5, 1))
         row1.padding = [5,20,5,20]
         row1.add_widget(self.rec_label)
         row1.add_widget(self.rec_select)
 
-        row2 = BoxLayout(orientation="horizontal", size_hint=(1,0.4))
-        self.odor_label = Label(text=('[size=16][color=000000]Odor'),
-                    markup = True, size_hint=(0.5, 1))
-        self.odor_select = TextInput(multiline=False, input_type='text',
-            on_text_validate=self.choose_odor, size_hint=(0.5, 1))
-        row2.padding = [5,20,5,20]
-        row2.add_widget(self.odor_label)
-        row2.add_widget(self.odor_select)
+        # row2 = BoxLayout(orientation="horizontal", size_hint=(1,0.4))
+        # self.odor_label = Label(text=('[size=16][color=000000]Odor'),
+        #             markup = True, size_hint=(0.5, 1))
+        # self.odor_select = TextInput(multiline=False, input_type='text',
+        #     on_text_validate=self.choose_odor, size_hint=(0.5, 1))
+        # row2.padding = [5,20,5,20]
+        # row2.add_widget(self.odor_label)
+        # row2.add_widget(self.odor_select)
 
         self.add_widget(row1)
-        self.add_widget(row2)
+        # self.add_widget(row2)
 
         # self.odor_select
 
@@ -201,21 +222,6 @@ class LogOptions(BoxLayout):
 
         self.log.updateConcLine()
 
-
-    def choose_odor(self,instance):
-        #ensure valid
-        print('in choose odor')
-        value = str(self.odor_select.text)
-        if value not in self.grid.odors:
-            return
-        self.log.odor = value
-        self.log.graph.remove_plot(self.log.plot)
-        self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
-        data = self.log.getData(self.log.receptor, self.log.odor)
-        self.log.plot.points = data
-        self.log.graph.add_plot(self.log.plot)
-
-        self.log.updateConcLine()
 
 
     def update(self, event):

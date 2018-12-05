@@ -35,7 +35,7 @@ from kivy.properties import NumericProperty
 from kivy.garden.filebrowser import FileBrowser
 from kivy.uix.textinput import TextInput
 from kivy.garden.graph import Graph, MeshLinePlot, LinePlot
-
+from kivy.uix.checkbox import CheckBox
 
 
 
