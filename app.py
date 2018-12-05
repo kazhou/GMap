@@ -54,18 +54,19 @@ class MapApp(App):
         # self.grid.addOdor(o1)
         self.grid.addOdor(o2)
 
-        self.map = MapWidget(self.grid, "Occupancy", size_hint=(0.375,0.5), pos_hint={'x':0.05,'y':.4})
+        self.map = MapWidget(self.grid, "Occupancy", size_hint=(0.375,0.5),
+            pos_hint={'x':0.05,'y':.4})
         parent.add_widget(self.map)
 
         self.map_opt = MapOptions(self.map, size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.8})
         parent.add_widget(self.map_opt)
 
-        self.log = LogGraph(self.grid, 0, "Occupancy",'odorlog_5-4-100b.odo',
+        self.log = LogGraph(self.grid, 0, "Occupancy",None,
                             size_hint=(0.375,0.3), pos_hint={'x':0.05,'y':0.05})
         parent.add_widget(self.log)
 
-        # self.log_opt = Options(self.map,size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.3})
-        # parent.add_widget(self.log_opt)
+        self.log_opt = LogOptions(self.log,size_hint=(0.33, 0.05), pos_hint={'x':0.5,'y':.3})
+        parent.add_widget(self.log_opt)
 
         self.bar = MenuBar(self.grid, self.map, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
         parent.add_widget(self.bar)
