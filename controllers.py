@@ -13,8 +13,9 @@ class OManager(BoxLayout):
         self.grid = grid
         self.map = map
         self.log = log
+        self.conc = -5
 
-        self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1))
+        self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1), group = 'show')
         self.checkbox.bind(active = self.show_plot)
 
         self.big_box1 = BoxLayout(orientation="vertical",size_hint=(0.20,1))
@@ -49,6 +50,7 @@ class OManager(BoxLayout):
 
     def on_slider_val(self, instance, val):
         self.label.text = ('[size=18][color=000000]10e'+str(val))
+        self.conc = val
         if self.log.odor == self.odor:
             self.log.conc = val
             self.log.updateConcLine()
@@ -61,6 +63,7 @@ class OManager(BoxLayout):
         self.slider.value = -5
         if self.log.odor == self.odor:
             self.log.conc = -5
+            self.conc = -5
             self.log.updateConcLine()
         self.adjust_conc(1e-5)
 
@@ -85,6 +88,8 @@ class OManager(BoxLayout):
             return
 
         self.log.odor = self.odor
+        self.log.conc = self.conc
+        print(self.conc, self.log.conc)
         self.log.graph.remove_plot(self.log.plot)
         self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
         data = self.log.getData(self.log.receptor, self.log.odor)
@@ -178,18 +183,18 @@ class LogOptions(BoxLayout):
         super().__init__(**kwargs)
         self.log = log
         self.grid = grid
-        self.orientation = "vertical"
+        self.orientation = "horizontal"
         self.opt_btn = ToggleButton(text='Occupancy', state='down',
-                size_hint=(1,0.2), on_press=self.update)
+                size_hint=(0.4,1), on_press=self.update)
         self.add_widget(self.opt_btn)
 
-        self.padding = [0,50,0,50]
-        row1 = BoxLayout(orientation="horizontal", size_hint=(1,0.4))
+        # self.padding = [0,50,0,50]
+        row1 = BoxLayout(orientation="horizontal", size_hint=(0.6,1))
         self.rec_label = Label(text=('[size=16][color=000000]Receptor'),
-                    markup = True, size_hint=(0.5, 1))
+                    markup = True, size_hint=(0.7, 1))
         self.rec_select = TextInput(text = "0", multiline=False, input_type='number',
-            on_text_validate=self.choose_rec, size_hint=(0.5, 1))
-        row1.padding = [5,20,5,20]
+            on_text_validate=self.choose_rec, size_hint=(0.3, 1))
+        # row1.padding = [5,20,5,20]
         row1.add_widget(self.rec_label)
         row1.add_widget(self.rec_select)
 

@@ -12,7 +12,7 @@ from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivy, FigureCanva
 
 # fig, ax = plt.subplots()
 # canvas = fig.canvas
-plt.figure(figsize=(12,12))
+plt.figure(figsize=(15,15))
 
 def displayOccupancies(grid):
         """

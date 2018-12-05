@@ -18,7 +18,7 @@ height = root.winfo_screenheight()
 import kivy
 from kivy.core.window import Window
 Window.clearcolor = (.9, .9, .9, 1)
-Window.size = (1*width,1.25*height)
+Window.size = (1.25*width,1.25*height)
 
 
 from imports import *
@@ -55,26 +55,24 @@ class MapApp(App):
         # self.grid.addOdor(o1)
         self.grid.addOdor(o2)
 
-        self.map = MapWidget(self.grid, "Occupancy", size_hint=(0.375,0.5),
-            pos_hint={'x':0.05,'y':.4})
+        self.map = MapWidget(self.grid, "Occupancy", size_hint=(0.55,0.85),
+            pos_hint={'x':0.01,'y':.05})
         parent.add_widget(self.map)
 
         self.map_opt = MapOptions(self.map,size_hint=(None, None),
-                size=(Window.width//3+75,50), pos_hint={'x':0.5,'y':.8})
+                size=(Window.width//3+75,50), pos_hint={'x':0.6,'y':.85})
         parent.add_widget(self.map_opt)
 
         self.log = LogGraph(self.grid, 0, "Occupancy", None, -5,
-                            size_hint=(0.375,0.3), pos_hint={'x':0.05,'y':0.05})
+                            size_hint=(0.375,0.3), pos_hint={'x':0.6,'y':0.05})
         parent.add_widget(self.log)
 
         self.log_opt = LogOptions(self.log, self.grid,
-                size_hint=(0.33, 0.33), pos_hint={'x':0.5,'y':.05})
+                size_hint=(0.375, 0.05), pos_hint={'x':0.6,'y':.375})
         parent.add_widget(self.log_opt)
 
-
-
         sv = ScrollView(size_hint=(None, None),
-                size=(Window.width//3+75,Window.height//3), pos_hint={'x':0.5,'y':.45})
+                size=(Window.width//3+75,Window.height//3), pos_hint={'x':0.6,'y':.5})
         self.sliders = SlideMenu(self.grid, self.map, self.log, size_hint=(None, None), width=Window.width//3+75)
                 #size_hint=(0.40,0.35),pos_hint={'x':.55,'y':.55}
         self.sliders.bind(minimum_height=self.sliders.setter('height'))
