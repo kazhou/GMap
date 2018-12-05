@@ -125,17 +125,20 @@ class OManager(BoxLayout):
 
     def on_slider_val(self, instance, val):
         self.label.text = ('[size=18][color=000000]10e'+str(val))
-        self.log.conc = val
+        if self.log.odor == self.odor:
+            self.log.conc = val
+            self.log.updateConcLine()
         #TODO: adjust COnc by val
         #udpate map
         self.adjust_conc(pow(10,val))
-        self.log.updateConcLine()
+
 
     def reset(self, instance):
         self.slider.value = -5
-        self.log.conc = -5
+        if self.log.odor == self.odor:
+            self.log.conc = -5
+            self.log.updateConcLine()
         self.adjust_conc(10e-5)
-        self.log.updateConcLine()
 
     def adjust_conc(self, conc):
         odor = self.grid.odors[self.odor]
