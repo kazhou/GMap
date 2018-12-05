@@ -62,3 +62,9 @@ class LogGraph(BoxLayout):
             data = []
         # print(data)
         return data
+
+    def clear(self):
+        self.odor = None
+        self.graph.remove_plot(self.plot)
+        self.conc = -5
+        self.updateConcLine()

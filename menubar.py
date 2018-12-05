@@ -113,8 +113,6 @@ class MenuBar(BoxLayout):
     def clear(self, b):
         self.map.clear()
         self.sm.clear()
-        self.log.graph.remove_plot(self.log.plot)
-        self.log.conc = -5
-        self.log.updateConcLine()
+        self.log.clear()
         # for plot in self.log.plots:
         #     self.my_graph.remove_plot(plot)
