@@ -9,6 +9,7 @@ class FilePopup(Popup):
     def __init__(self,map, grid, sm, **kwargs):
         super().__init__(**kwargs)
         self.auto_dismiss = False
+        self.title = "Load File"
         fbrowser = FileSelect(self, map, grid, sm)
         self.add_widget(fbrowser)
 
@@ -107,6 +108,7 @@ class MenuBar(BoxLayout):
 
     def save_img(self, b):
         pass
+        # self.map.plot_canv.print_png("my_plot.png")
 
     def clear(self, b):
         self.map.clear()
