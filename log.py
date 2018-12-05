@@ -57,22 +57,76 @@ class LogOptions(BoxLayout):
     def getState(self):
         return self.opt_btn.text
 
-    def __init__(self, log, **kwargs):
+    def __init__(self, log, grid, **kwargs):
         super().__init__(**kwargs)
         self.log = log
-        self.orientation = "horizontal"
+        self.grid = grid
+        self.orientation = "vertical"
         self.opt_btn = ToggleButton(text='Occupancy', state='down',
-                size_hint=(0.5,1), on_press=self.update)
+                size_hint=(1,0.2), on_press=self.update)
         self.add_widget(self.opt_btn)
 
-    def update(self,event):
+        self.padding = [0,50,0,50]
+        row1 = BoxLayout(orientation="horizontal", size_hint=(1,0.4))
+        self.rec_label = Label(text=('[size=16][color=000000]Receptor'),
+                    markup = True, size_hint=(0.5, 1))
+        self.rec_select = TextInput(multiline=False, input_type='number',
+            on_text_validate=self.choose_rec, size_hint=(0.5, 1))
+        row1.padding = [5,20,5,20]
+        row1.add_widget(self.rec_label)
+        row1.add_widget(self.rec_select)
+
+        row2 = BoxLayout(orientation="horizontal", size_hint=(1,0.4))
+        self.odor_label = Label(text=('[size=16][color=000000]Odor'),
+                    markup = True, size_hint=(0.5, 1))
+        self.odor_select = TextInput(multiline=False, input_type='text',
+            on_text_validate=self.choose_odor, size_hint=(0.5, 1))
+        row2.padding = [5,20,5,20]
+        row2.add_widget(self.odor_label)
+        row2.add_widget(self.odor_select)
+
+        self.add_widget(row1)
+        self.add_widget(row2)
+
+        # self.odor_select
+
+    def choose_rec(self,instance):
+        # Ensure within bounds
+        print('in choose rec')
+        value = int(self.rec_select.text)
+        if value >= self.grid.num_receptors or value < 0:
+            return
+        self.log.receptor = value
+        self.log.graph.remove_plot(self.log.plot)
+        self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
+        data = self.log.getData(self.log.receptor, self.log.odor)
+        self.log.plot.points = data
+        self.log.graph.add_plot(self.log.plot)
+
+    def choose_odor(self,instance):
+        #ensure valid
+        print('in choose odor')
+        value = str(self.odor_select.text)
+        if value not in self.grid.odors:
+            return
+        self.log.odor = value
+        self.log.graph.remove_plot(self.log.plot)
+        self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
+        data = self.log.getData(self.log.receptor, self.log.odor)
+        self.log.plot.points = data
+        self.log.graph.add_plot(self.log.plot)
+
+
+    def update(self, event):
         #TODO: switch map display
+        # print("update")
         if self.opt_btn.state == 'normal':
             self.opt_btn.text = "Activation"
-            self.state =  "Activation"
+            self.log.state =  "Activation"
         else:
             self.opt_btn.text = "Occupancy"
-            self.state =  "Occupancy"
+            self.log.state =  "Occupancy"
+        # print(self.state)
         self.log.graph.remove_plot(self.log.plot)
         self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
         data = self.log.getData(self.log.receptor, self.log.odor)

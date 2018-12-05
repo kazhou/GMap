@@ -33,6 +33,7 @@ from kivy.clock import Clock
 from os.path import sep, expanduser, isdir, dirname, basename
 from kivy.properties import NumericProperty
 from kivy.garden.filebrowser import FileBrowser
+from kivy.uix.textinput import TextInput
 
 
 
