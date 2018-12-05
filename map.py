@@ -144,22 +144,23 @@ class Receptor:
         # print(kd)
         # o = self.odors[odor]
         # print(o.getkD())
-        for c in range (-10, 1):
-            conc = pow(10,c)
+        for c in range (-100, 1,2):
+            conc = pow(10,(c/10))
+            # print(conc)
             # print(conc)
             po = self.calcPartialOcc(odor, False, conc)
-            points.append((c, po))
+            points.append((c/10, po))
         return points
 
     def conc_partial_points_act(self, odor):
         points = []
         eff = self.effs[odor]
-        for c in range (-10, 1):
-            conc = pow(10,c)
+        for c in range (-100, 1,2):
+            conc = pow(10,(c/10))
             # print(conc)
             po = self.calcPartialOcc(odor, False, conc)
             act = po*eff
-            points.append((c, act))
+            points.append((c/10, act))
         return points
 
     def calcDFPoints(self, odor_name, value):

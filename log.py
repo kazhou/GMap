@@ -60,4 +60,5 @@ class LogGraph(BoxLayout):
             data = self.grid.getConcPointsAct(receptor, odor)
         else:
             data = []
+        # print(data)
         return data
