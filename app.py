@@ -66,7 +66,7 @@ class MapApp(App):
         parent.add_widget(self.log)
 
         self.log_opt = LogOptions(self.log, self.grid,
-                size_hint=(0.33, 0.33), pos_hint={'x':0.5,'y':.1})
+                size_hint=(0.33, 0.33), pos_hint={'x':0.5,'y':.05})
         parent.add_widget(self.log_opt)
 
 

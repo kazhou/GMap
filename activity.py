@@ -87,10 +87,13 @@ class OManager(BoxLayout):
     Check box, slider, replace/remove
     """
     slider_val = NumericProperty(-5)
-    def __init__(self, menu, odor, **kwargs):
+    def __init__(self, menu, odor, grid, map, **kwargs):
         super().__init__(**kwargs)
         self.menu = menu
         self.odor = odor
+        self.grid = grid
+        self.map = map
+
         self.big_box1 = BoxLayout(orientation="vertical",size_hint=(0.20,1))
         self.name = Label(text=('[size=16][color=000000]'+str(odor)),
                     markup = True, size_hint=(1,0.15))
@@ -120,6 +123,14 @@ class OManager(BoxLayout):
     def on_slider_val(self, instance, val):
         self.label.text = ('[size=18][color=000000]10e'+str(val))
         #TODO: adjust COnc by val
+        #udpate map
+        self.adjust_conc(self.odor, pow(10,val))
+
+    def adjust_conc(self, o_name, conc):
+        odor = self.grid.odors[o_name]
+        self.grid.adjustConcs(odor, conc)
+        print("adj")
+        self.map.update()
 
     def remove(self, instance):
         print(self.menu.om_list)
@@ -143,14 +154,15 @@ class SlideMenu(BoxLayout):
         self.om_list = {}
         odors = list(grid.odors.keys())
         for i in range(size):
-            self.om_list[odors[i]] = OManager(self, odors[i], size=(self.width, 75),
+            self.om_list[odors[i]] = OManager(self, odors[i], self.grid, self.map,
+                        size=(self.width, 75),
                          size_hint=(None, None))
             self.add_widget(self.om_list[odors[i]])
 
     def add_om(self, odor):
         if odor in self.om_list:
             return
-        om = OManager(self, odor, size=(self.width, 75),
+        om = OManager(self, odor, self.grid, self.map,size=(self.width, 75),
                      size_hint=(None, None))
         self.om_list[odor] = om
         self.add_widget(om)

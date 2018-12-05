@@ -40,7 +40,7 @@ class LogGraph(BoxLayout):
         self.graph.add_plot(self.plot)
 
     def getData(self, receptor, odor):
-        if odor is None:
+        if odor is None or odor not in self.grid.odors:
             data = []
         elif self.state == "Occupancy":
             data = self.grid.getConcPointsOcc(receptor, odor)
