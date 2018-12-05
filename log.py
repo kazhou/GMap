@@ -1,14 +1,15 @@
 from imports import *
-from kivy.garden.graph import Graph, MeshLinePlot
+from kivy.garden.graph import Graph, MeshLinePlot, LinePlot
 
 
 class LogGraph(BoxLayout):
-    def __init__(self, grid, receptor, option, odor, **kwargs):
+    def __init__(self, grid, receptor, option, odor, conc, **kwargs):
         super().__init__(**kwargs)
         self.grid = grid
         self.receptor = receptor
         self.odor = odor
         self.state = option
+        self.conc = conc
         self.makeGraph(receptor, odor)
         self.background_normal = ''
         self.background_color = [1,0,0,1]
@@ -38,6 +39,17 @@ class LogGraph(BoxLayout):
         self.plot.points = data
         # print(plot.points)
         self.graph.add_plot(self.plot)
+        self.conc_line = MeshLinePlot(color=[0, 0, 1, 1])
+        self.conc_line.points = [(self.conc, y/10) for y in range(0,11)]
+        self.graph.add_plot(self.conc_line)
+
+
+    def updateConcLine(self):
+        self.graph.remove_plot(self.conc_line)
+        self.conc_line = MeshLinePlot(color=[0, 0, 1, 1])
+        self.conc_line.points = [(self.conc, y/10) for y in range(0,11)]
+        self.graph.add_plot(self.conc_line)
+
 
     def getData(self, receptor, odor):
         if odor is None or odor not in self.grid.odors:
@@ -103,6 +115,12 @@ class LogOptions(BoxLayout):
         self.log.plot.points = data
         self.log.graph.add_plot(self.log.plot)
 
+        self.log.updateConcLine()
+        # self.log.graph.remove_plot(self.log.conc_line)
+        # self.log.conc_line = MeshLinePlot(color=[0, 0, 1, 1])
+        # self.log.conc_line.points = [(self.log.conc, y/10) for y in range(0,11)]
+        # self.log.graph.add_plot(self.log.conc_line)
+
     def choose_odor(self,instance):
         #ensure valid
         print('in choose odor')
@@ -115,6 +133,13 @@ class LogOptions(BoxLayout):
         data = self.log.getData(self.log.receptor, self.log.odor)
         self.log.plot.points = data
         self.log.graph.add_plot(self.log.plot)
+
+        self.log.updateConcLine()
+        # self.log.graph.remove_plot(self.log.conc_line)
+        # self.log.conc_line = MeshLinePlot(color=[0, 0, 1, 1])
+        # self.log.conc_line.points = [(self.log.conc, y/10) for y in range(0,11)]
+        # self.log.graph.add_plot(self.log.conc_line)
+
 
 
     def update(self, event):
@@ -132,3 +157,9 @@ class LogOptions(BoxLayout):
         data = self.log.getData(self.log.receptor, self.log.odor)
         self.log.plot.points = data
         self.log.graph.add_plot(self.log.plot)
+
+        self.log.updateConcLine()
+        # self.log.graph.remove_plot(self.log.conc_line)
+        # self.log.conc_line = MeshLinePlot(color=[0, 0, 1, 1])
+        # self.log.conc_line.points = [(self.log.conc, y/10) for y in range(0,11)]
+        # self.log.graph.add_plot(self.log.conc_line)
