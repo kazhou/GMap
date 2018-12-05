@@ -178,11 +178,28 @@ class Receptor:
             sum += (conc/self.kds[odor])
         return sum
 
+    def clear(self):
+        self.odors = {} #odor -> Odor()
+        self.num_odors = 0
+        self.kds = {}
+        self.effs = {}
+        self.partial_occupancies = {}
+        #odor->PO, linked list?
+        self.concs = {} #odor -> conc; need other DS
+
+        self.df = 0
+        self.total_occ = 0
+        self.total_act = 0
 
 class Grid:
     """
     NP Array of Receptors
     """
+
+    def clear(self):
+        for rec in self.receptors:
+            rec.clear()
+
     def getReceptor(self, index):
         """
         """

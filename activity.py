@@ -70,6 +70,9 @@ class MapWidget(BoxLayout):
 
         self.plot_canv.draw()
 
+    def clear(self):
+        self.grid.clear()
+        self.update()
 
 class MapPopUp(Popup):
     """

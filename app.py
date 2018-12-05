@@ -80,7 +80,7 @@ class MapApp(App):
         sv.add_widget(self.sliders)
         parent.add_widget(sv)
 
-        self.bar = MenuBar(self.grid, self.map, self.sliders, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
+        self.bar = MenuBar(self.grid, self.map, self.log, self.sliders, size_hint=(1,0.05),pos_hint={'x':0,'y':0.95})
         parent.add_widget(self.bar)
 
         return parent

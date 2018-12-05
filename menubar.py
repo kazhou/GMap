@@ -2,6 +2,7 @@ from imports import *
 from kivy.garden.filebrowser import FileBrowser
 from activity import *
 from log import *
+from controllers import *
 
 
 class FilePopup(Popup):
@@ -73,10 +74,11 @@ class MenuBar(BoxLayout):
     """
     Menu Bar at top
     """
-    def __init__(self, grid, map, sm, **kwargs):
+    def __init__(self, grid, map, log, sm, **kwargs):
         super().__init__(**kwargs)
         self.grid = grid
         self.map = map
+        self.log = log
         self.sm = sm
 
         self.fbrowser = Button(on_press=self.open_browser, text="New Odor")
@@ -88,7 +90,7 @@ class MenuBar(BoxLayout):
         self.add_widget(self.load_btn)
         self.img_btn =  Button(text="Save Image")
         self.add_widget(self.img_btn)
-        self.clear_btn =  Button(text="Clear All")
+        self.clear_btn =  Button(text="Clear All", on_press = self.clear)
         self.add_widget(self.clear_btn)
 
 
@@ -106,5 +108,11 @@ class MenuBar(BoxLayout):
     def save_img(self, b):
         pass
 
-    def ckear(self, b):
-        pass
+    def clear(self, b):
+        self.map.clear()
+        self.sm.clear()
+        self.log.graph.remove_plot(self.log.plot)
+        self.log.conc = -5
+        self.log.updateConcLine()
+        # for plot in self.log.plots:
+        #     self.my_graph.remove_plot(plot)

@@ -145,6 +145,9 @@ class SlideMenu(BoxLayout):
         self.log.graph.remove_plot(self.log.plot)
         del self.om_list[odor]
 
+    def clear(self):
+        self.om_list = {}
+        self.clear_widgets()
 
 class MapOptions(BoxLayout):
     """
