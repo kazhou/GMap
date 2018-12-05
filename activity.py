@@ -100,10 +100,12 @@ class OManager(BoxLayout):
         self.big_box1.add_widget(self.name)
 
         self.box = BoxLayout(orientation="vertical",size_hint=(0.20,1))
-        self.show_btn = ToggleButton(text="Show",size_hint=(1,0.5))
+        # self.show_btn = ToggleButton(text="Show",size_hint=(1,0.5))
+        self.reset_btn = Button(text="Reset",size_hint=(1,0.5),
+                        on_press = self.reset)
         self.remove_btn = Button(text="Remove",
                         size_hint=(1,0.5), on_press = self.remove)
-        self.box.add_widget(self.show_btn)
+        self.box.add_widget(self.reset_btn)
         self.box.add_widget(self.remove_btn)
         self.padding = [5,10,5,10]
         self.slider = Slider(min=-10, max=0, step = 1, value = -5,
@@ -124,20 +126,30 @@ class OManager(BoxLayout):
         self.label.text = ('[size=18][color=000000]10e'+str(val))
         #TODO: adjust COnc by val
         #udpate map
-        self.adjust_conc(self.odor, pow(10,val))
+        self.adjust_conc(pow(10,val))
 
-    def adjust_conc(self, o_name, conc):
-        odor = self.grid.odors[o_name]
+    def reset(self, instance):
+        self.slider.value = -5
+        self.adjust_conc(10e-5)
+
+    def adjust_conc(self, conc):
+        odor = self.grid.odors[self.odor]
         self.grid.adjustConcs(odor, conc)
-        print("adj")
+        # print("adj")
         self.map.update()
 
     def remove(self, instance):
         print(self.menu.om_list)
-        print("remove")
+        # print("remove")
         self.menu.remove_om(self.odor)
         # print(self.name)
         print(self.menu.om_list)
+
+    def hide(self):
+        pass
+
+    def show(self):
+        pass
 
 class SlideMenu(BoxLayout):
     """
