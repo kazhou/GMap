@@ -84,28 +84,27 @@ class MenuBar(BoxLayout):
         self.add_widget(self.fbrowser)
         self.save_btn =  Button(text="Export Activity")
         self.add_widget(self.save_btn)
+        self.load_btn =  Button(text="Load Activity")
+        self.add_widget(self.load_btn)
         self.img_btn =  Button(text="Save Image")
         self.add_widget(self.img_btn)
         self.clear_btn =  Button(text="Clear All")
         self.add_widget(self.clear_btn)
 
-        #TODO: for demonstration
-        self.o1 = Odor('odorlog_5-4-100a.odo')
-        self.o2 = Odor('odorlog_5-4-100b.odo')
-
-        # self.remove_btn =  Button(text="Remove Odor", on_press=self.remove_odor)
-        # self.add_widget(self.remove_btn)
-        # self.conc_btn =  Button(text="Change Conc", on_press=self.adjust_conc)
-        # self.add_widget(self.conc_btn)
 
     def open_browser(self, b):
         p = FilePopup(self.map, self.grid, self.sm, size_hint=(0.7,0.7))
         p.open()
 
 
+    def export_activity(self, b):
+        pass
 
+    def load_activity(self, b):
+        pass
 
-    # def adjust_conc(self, b):
-    #     self.grid.adjustConcs(self.o2, 10e-4)
-    #     print("adj")
-    #     self.map.update()
+    def save_img(self, b):
+        pass
+
+    def ckear(self, b):
+        pass

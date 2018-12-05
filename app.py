@@ -25,6 +25,7 @@ from imports import *
 from menubar import *
 from activity import *
 from log import *
+from controllers import *
 
 
 # Builder.load_string('''
