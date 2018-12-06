@@ -5,9 +5,10 @@ Author: Karen Zhou
 Date:
 """
 from consts import *
-from numpy import *
 import os
+from os.path import dirname
 from pathlib import Path
+# from imports import *
 
 class Odor:
     """
@@ -67,8 +68,9 @@ class Odor:
 
         """
         cwd = os.getcwd()
+        cmd = dirname(__file__)
         #TODO: fix naming
-        path = Path(cwd+"/data")
+        path = Path(cmd+"/data")
         n= path / self._name
         f= open(n, "r")
 

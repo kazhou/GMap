@@ -10,7 +10,7 @@ we separate the constants into their own module. This allows all modules to acce
 """
 #import cornell
 import sys
-from math import *
+# from math import *
 
 #default concentration
 DEFAULT_CONC = 1e-5 #pow(10,-5)

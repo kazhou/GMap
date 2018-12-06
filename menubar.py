@@ -6,11 +6,11 @@ from controllers import *
 
 
 class FilePopup(Popup):
-    def __init__(self,map, grid, sm, **kwargs):
+    def __init__(self,map, grid, log, sm, **kwargs):
         super().__init__(**kwargs)
         self.auto_dismiss = False
         self.title = "Load File"
-        fbrowser = FileSelect(self, map, grid, sm)
+        fbrowser = FileSelect(self, map, grid, log, sm)
         self.add_widget(fbrowser)
 
 
@@ -18,14 +18,14 @@ class FileSelect(FileBrowser):
     """
     filebrowser
     """
-    def __init__(self, pop, map, grid, sm, **kwargs):
+    def __init__(self, pop, map, grid, log, sm, **kwargs):
         if sys.platform == 'win':
             self.user_path = dirname(expanduser(os.getcwd())) + sep + 'data'
         else:
             self.user_path = expanduser(os.getcwd()) + sep + 'data'
         print(self.user_path)
 
-        super().__init__(select_string='Select',
+        super().__init__(select_string='Select',path = self.user_path,
                               favorites=[(self.user_path, 'data')], **kwargs)
         self.bind(on_success=self._fbrowser_success,
                     on_canceled=self._fbrowser_canceled)
@@ -33,21 +33,22 @@ class FileSelect(FileBrowser):
         self.grid = grid
         self.map = map
         self.sm = sm
+        self.log = log
 
 
     def _fbrowser_canceled(self, instance):
-        print ('cancelled, Close self.')
+        # print ('cancelled, Close self.')
         self.pop.dismiss()
         #TODO: close
 
     def _fbrowser_success(self, instance):
         print(instance.selection)
         if(len(instance.selection) == 0):
-            print('no selection')
+            # print('no selection')
             return
         fpath = str(instance.selection[0])
         fname = basename(fpath)
-        print (fname)
+        # print (fname)
         # return fname
         self.add_odor(fname)
         self.pop.dismiss()
@@ -56,20 +57,12 @@ class FileSelect(FileBrowser):
         odor = Odor(o)
         self.grid.addOdor(odor)
         # self.grid.addOdor(self.o2)
-        print("add")
+        # print("add")
         # displayActivations(self.grid)
         # self.map.plot_canv.draw()
         self.map.update()
         self.sm.add_om(o)
-
-    def remove_odor(self, o):
-        # TODO: move this
-        self.grid.removeOdor(self.o1)
-        print("remove")
-        self.map.update()
-        self.sm.remove_om(o)
-
-
+        # self.log.
 
 class MenuBar(BoxLayout):
     """
@@ -96,7 +89,7 @@ class MenuBar(BoxLayout):
 
 
     def open_browser(self, b):
-        p = FilePopup(self.map, self.grid, self.sm, size_hint=(0.7,0.7))
+        p = FilePopup(self.map, self.grid, self.log, self.sm, size_hint=(0.7,0.7))
         p.open()
 
 

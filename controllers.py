@@ -1,5 +1,19 @@
 from imports import *
 
+class MyScrollView(ScrollView):
+    pass
+
+Builder.load_string('''
+<MyScrollView>:
+    canvas:
+        Color:
+            rgb: 0.75, 0.75, 0.75
+        Rectangle:
+            pos: self.pos
+            size: self.size
+''')
+
+
 class OManager(BoxLayout):
     """
     Controls for single odor:
@@ -32,7 +46,7 @@ class OManager(BoxLayout):
         self.box.add_widget(self.reset_btn)
         self.box.add_widget(self.remove_btn)
         self.padding = [5,10,5,10]
-        self.slider = Slider(min=-10, max=0, step = 1, value = -5,
+        self.slider = Slider(min=-10, max=0, step = 0.5, value = -5,
                         size_hint=(0.5,1))
         self.slider.fbind('value', self.on_slider_val)
         self.label = Label(text=('[size=18][color=000000]10e'+str(self.slider_val)),
@@ -74,14 +88,14 @@ class OManager(BoxLayout):
         self.map.update()
 
     def remove(self, instance):
-        print(self.menu.om_list)
+        # print(self.menu.om_list)
         # print("remove")
         self.menu.remove_om(self.odor)
         # print(self.name)
         print(self.menu.om_list)
 
     def show_plot(self, instance, active):
-        print('in choose odor')
+        # print('in choose odor')
         if not active:
             self.log.graph.remove_plot(self.log.plot)
             self.log.odor = None
@@ -89,7 +103,7 @@ class OManager(BoxLayout):
 
         self.log.odor = self.odor
         self.log.conc = self.conc
-        print(self.conc, self.log.conc)
+        # print(self.conc, self.log.conc)
         self.log.graph.remove_plot(self.log.plot)
         self.log.plot = MeshLinePlot(color=[1, 0, 0, 1])
         data = self.log.getData(self.log.receptor, self.log.odor)
@@ -217,7 +231,7 @@ class LogOptions(BoxLayout):
 
     def choose_rec(self,instance):
         # Ensure within bounds
-        print('in choose rec')
+        # print('in choose rec')
         value = int(self.rec_select.text)
         if value >= self.grid.num_receptors or value < 0:
             return
