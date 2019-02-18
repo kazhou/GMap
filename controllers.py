@@ -121,7 +121,6 @@ class OManager(BoxLayout):
 class SlideMenu(BoxLayout):
     """
     Menu of sliders to adjust concentrations
-    TODO: Associate w/ odors
     """
     def __init__(self, grid, map, log, **kwargs):
         super().__init__(**kwargs)

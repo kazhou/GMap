@@ -64,6 +64,7 @@ class FileSelect(FileBrowser):
         self.sm.add_om(o)
         # self.log.
 
+
 class MenuBar(BoxLayout):
     """
     Menu Bar at top

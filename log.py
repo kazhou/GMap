@@ -11,7 +11,7 @@ class LogGraph(BoxLayout):
         # self.odors={}
         self.state = option
         self.conc = conc
-        self.graph = Graph(xlabel='Concentration', ylabel='Log',
+        self.graph = Graph(xlabel='Concentration (log)', ylabel=('Partial '+self.state),
         x_ticks_major=1, y_ticks_major=0.25,
         y_grid_label=True, x_grid_label=True, padding=5,
         x_grid=False, y_grid=False, xmin=-10, xmax=0, ymin=0, ymax=1,
@@ -57,8 +57,10 @@ class LogGraph(BoxLayout):
             data = []
         elif self.state == "Occupancy":
             data = self.grid.getConcPointsOcc(receptor, odor)
+            self.graph.ylabel=('Partial '+self.state)
         elif self.state == "Activation":
             data = self.grid.getConcPointsAct(receptor, odor)
+            self.graph.ylabel=('Partial '+self.state)
         else:
             data = []
         # print(data)

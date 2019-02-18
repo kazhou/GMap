@@ -1,18 +1,15 @@
 """
-main controller
-
-# PRIMARY RULE: Controller can only access attributes in wave.py via getters/setters
-# Controller is NOT allowed to access anything in models.py
+main app
 """
 
 from kivy.config import Config
-Config.set('graphics', 'resizable', '1') # make not resizable
+# Config.set('graphics', 'resizable', '1') # make not resizable
 
 from consts import *
 import os
 # from mapview2 import *
 import tkinter as tk
-root = tk.Tk()
+# root = tk.Tk()
 width = 1280
 height = 720
 import kivy
@@ -54,8 +51,8 @@ class MapApp(App):
         # parent.add_widget(OMlabel)
 
         self.grid = Grid(10,10)
-        o1 = Odor('odorlog_5-4-100a.odo')
-        o2 = Odor('odorlog_5-4-100b.odo')
+        # o1 = Odor('odorlog_5-4-100a.odo')
+        # o2 = Odor('odorlog_5-4-100b.odo')
         # self.grid.addOdor(o1)
         # self.grid.addOdor(o2)
 

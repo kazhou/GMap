@@ -74,6 +74,7 @@ class MapWidget(BoxLayout):
         self.grid.clear()
         self.update()
 
+
 class MapPopUp(Popup):
     """
     Map pops up to full screen
