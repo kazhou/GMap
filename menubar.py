@@ -3,14 +3,19 @@ from kivy.garden.filebrowser import FileBrowser
 from activity import *
 from log import *
 from controllers import *
+from os.path import join
 
 
 class FilePopup(Popup):
-    def __init__(self,map, grid, log, sm, **kwargs):
+    def __init__(self, map, grid, log, sm, type, **kwargs):
         super().__init__(**kwargs)
         self.auto_dismiss = False
-        self.title = "Load File"
-        fbrowser = FileSelect(self, map, grid, log, sm)
+        if type == "load":
+            self.title = "Load File"
+            fbrowser = FileSelect(self, map, grid, log, sm)
+        else:
+            self.title = "Save File"
+            fbrowser = SaveSelect(self, map, grid, log, sm)
         self.add_widget(fbrowser)
 
 
@@ -42,7 +47,7 @@ class FileSelect(FileBrowser):
         #TODO: close
 
     def _fbrowser_success(self, instance):
-        print(instance.selection)
+        # print(instance.selection)
         if(len(instance.selection) == 0):
             # print('no selection')
             return
@@ -65,6 +70,42 @@ class FileSelect(FileBrowser):
         # self.log.
 
 
+class SaveSelect(FileBrowser):
+    """
+    filebrowser
+    """
+    def __init__(self, pop, map, grid, log, sm, **kwargs):
+        if sys.platform == 'win':
+            self.user_path = dirname(expanduser(os.getcwd())) + sep + 'plots'
+        else:
+            self.user_path = expanduser(os.getcwd()) + sep + 'plots'
+        print(self.user_path)
+
+        super().__init__(select_string='Save',path = self.user_path,
+                              favorites=[(self.user_path, 'plots')], **kwargs)
+        self.bind(on_success=self._fbrowser_success,
+                    on_canceled=self._fbrowser_canceled)
+        self.filters = ["*.png"]
+        self.pop = pop
+        self.grid = grid
+        self.map = map
+        self.sm = sm
+        self.log = log
+
+
+    def _fbrowser_canceled(self, instance):
+        # print ('cancelled, Close self.')
+        self.pop.dismiss()
+
+    def _fbrowser_success(self, instance):
+        #TODO display default filename
+        if self.filename == "":
+            self.filename = "my_plot.png"
+        print(self.filename)
+        self.map.plot_canv.print_png(join(self.user_path, self.filename))  #"my_plot.png"
+        self.pop.dismiss()
+
+
 class MenuBar(BoxLayout):
     """
     Menu Bar at top
@@ -77,20 +118,19 @@ class MenuBar(BoxLayout):
         self.sm = sm
 
         self.fbrowser = Button(on_press=self.open_browser, text="New Odor")
-                                # size_hint=(0.1,1))
         self.add_widget(self.fbrowser)
         self.save_btn =  Button(text="Export Activity")
         self.add_widget(self.save_btn)
         self.load_btn =  Button(text="Load Activity")
         self.add_widget(self.load_btn)
-        self.img_btn =  Button(text="Save Image")
+        self.img_btn =  Button(on_press=self.save_img, text="Save Image")
         self.add_widget(self.img_btn)
         self.clear_btn =  Button(text="Clear All", on_press = self.clear)
         self.add_widget(self.clear_btn)
 
 
     def open_browser(self, b):
-        p = FilePopup(self.map, self.grid, self.log, self.sm, size_hint=(0.7,0.7))
+        p = FilePopup(self.map, self.grid, self.log, self.sm, type="load", size_hint=(0.7,0.7))
         p.open()
 
 
@@ -101,7 +141,8 @@ class MenuBar(BoxLayout):
         pass
 
     def save_img(self, b):
-        pass
+        p = FilePopup(self.map, self.grid, self.log, self.sm, type="save", size_hint=(0.7, 0.7))
+        p.open()
         # self.map.plot_canv.print_png("my_plot.png")
 
     def clear(self, b):
