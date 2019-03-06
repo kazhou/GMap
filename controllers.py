@@ -28,7 +28,7 @@ class OManager(BoxLayout):
         self.grid = grid
         self.map = map
         self.log = log
-        self.conc = round(1/math.log(10, self.grid.getConc(odor))) #-5
+        self.conc = round(1/math.log(10, self.grid.getConc(odor)),1) #-5
 
         self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1), group = 'show')
         self.checkbox.bind(active = self.show_plot)
