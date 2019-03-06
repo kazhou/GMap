@@ -1,4 +1,5 @@
 from imports import *
+import math
 
 class MyScrollView(ScrollView):
     pass
@@ -27,7 +28,7 @@ class OManager(BoxLayout):
         self.grid = grid
         self.map = map
         self.log = log
-        self.conc = -5
+        self.conc = round(1/math.log(10, self.grid.getConc(odor))) #-5
 
         self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1), group = 'show')
         self.checkbox.bind(active = self.show_plot)
@@ -42,17 +43,16 @@ class OManager(BoxLayout):
         self.reset_btn = Button(text="Reset",size_hint=(1,0.5),
                         on_press = self.reset)
         self.remove_btn = Button(text="Remove",
-                        size_hint=(1,0.5), on_press = self.remove)
+                        size_hint=(1,0.5), on_press=self.remove)
         self.box.add_widget(self.reset_btn)
         self.box.add_widget(self.remove_btn)
         self.padding = [5,10,5,10]
-        self.slider = Slider(min=-10, max=0, step = 0.5, value = -5,
+        self.slider = Slider(min=-10, max=0, step=0.5, value=self.conc,
                         size_hint=(0.5,1))
         self.slider.fbind('value', self.on_slider_val)
-        self.label = Label(text=('[size=18][color=000000]10e'+str(self.slider_val)),
+        self.label = Label(text=('[size=18][color=000000]10e'+str(self.conc)),
                     markup = True, size_hint=(0.2,1))
         self.big_box2 = BoxLayout(orientation="horizontal", size_hint=(1,0.85))
-
 
         self.big_box2.add_widget(self.box)
         self.big_box2.add_widget(self.slider)

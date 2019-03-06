@@ -191,6 +191,7 @@ class Receptor:
         self.total_occ = 0
         self.total_act = 0
 
+
 class Grid:
     """
     NP Array of Receptors
@@ -200,6 +201,9 @@ class Grid:
         for rec in self.receptors:
             rec.clear()
 
+    def getConc(self, odor):
+        return self.receptors[0].concs[odor]
+
     def getReceptor(self, index):
         """
         """
@@ -207,7 +211,7 @@ class Grid:
 
     def __init__(self, x, y):
         """
-        TODO: pointers are same
+
         """
         # self.receptors = np.array([Receptor()]*size)
         size = x*y

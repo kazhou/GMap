@@ -44,13 +44,11 @@ class LogGraph(BoxLayout):
         self.conc_line.points = [(self.conc, y/10) for y in range(0,11)]
         self.graph.add_plot(self.conc_line)
 
-
     def updateConcLine(self):
         self.graph.remove_plot(self.conc_line)
         self.conc_line = MeshLinePlot(color=[0, 0, 1, 1])
         self.conc_line.points = [(self.conc, y/10) for y in range(0,11)]
         self.graph.add_plot(self.conc_line)
-
 
     def getData(self, receptor, odor):
         if odor is None or odor not in self.grid.odors:
@@ -71,5 +69,3 @@ class LogGraph(BoxLayout):
         self.graph.remove_plot(self.plot)
         self.conc = -5
         self.updateConcLine()
-
-    # def update(self):
