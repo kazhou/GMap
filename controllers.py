@@ -21,6 +21,7 @@ class OManager(BoxLayout):
     Check box, slider, replace/remove
     """
     slider_val = NumericProperty(-5)
+
     def __init__(self, menu, odor, grid, map, log, **kwargs):
         super().__init__(**kwargs)
         self.menu = menu
@@ -30,8 +31,8 @@ class OManager(BoxLayout):
         self.log = log
         self.conc = round(1/math.log(10, self.grid.getConc(odor)),1) #-5
 
-        self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1), group = 'show')
-        self.checkbox.bind(active = self.show_plot)
+        self.checkbox = CheckBox(color = [0,0,1,1], size_hint=(0.1,1), group='show')
+        self.checkbox.bind(active=self.show_plot)
 
         self.big_box1 = BoxLayout(orientation="vertical",size_hint=(0.20,1))
         self.name = Label(text=('[size=16][color=000000]'+str(odor)),
@@ -143,9 +144,9 @@ class SlideMenu(BoxLayout):
     def add_om(self, odor):
         if odor in self.om_list:
             return
-        om = OManager(self, odor, self.grid, self.map,  self.log,
+        om = OManager(self, odor, self.grid, self.map, self.log,
                     size=(self.width, 75),
-                     size_hint=(None, None))
+                    size_hint=(None, None))
         self.om_list[odor] = om
         self.add_widget(om)
 
@@ -207,7 +208,7 @@ class LogOptions(BoxLayout):
         # self.padding = [0,50,0,50]
         row1 = BoxLayout(orientation="horizontal", size_hint=(0.6,1))
         self.rec_label = Label(text=('[size=16][color=000000]Receptor'),
-                    markup = True, size_hint=(0.7, 1))
+                    markup=True, size_hint=(0.7, 1))
         self.rec_select = TextInput(text = "0", multiline=False, input_type='number',
             on_text_validate=self.choose_rec, size_hint=(0.3, 1))
         # row1.padding = [5,20,5,20]
